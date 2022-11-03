@@ -1,9 +1,10 @@
 package com.example.miniQuidli.dto;
 
-public class CreditUserDTO
+//DTO used to credit or withdraw an amount of token to a user
+public class CreditWithdrawTranscationUserDTO
 {
 	private Integer userAccountId;
-	private Double amountToCredit;
+	private Double transactionAmount;
 	private String amountCurrency;
 	
 	public Integer getUserAccountId()
@@ -14,13 +15,14 @@ public class CreditUserDTO
 	{
 		this.userAccountId = userAccountId;
 	}
-	public Double getAmountToCredit()
+	
+	public Double getTransactionAmount()
 	{
-		return amountToCredit;
+		return transactionAmount;
 	}
-	public void setAmountToCredit(Double amountToCredit)
+	public void setTransactionAmount(Double transactionAmount)
 	{
-		this.amountToCredit = amountToCredit;
+		this.transactionAmount = transactionAmount;
 	}
 	public String getAmountCurrency()
 	{

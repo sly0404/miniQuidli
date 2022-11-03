@@ -1,5 +1,6 @@
 package com.example.miniQuidli.dto;
 
+//DTO used to manage response to display tokens of wallet
 public class TokenDTO
 {
 	private String tokenName;

@@ -1,5 +1,6 @@
 package com.example.miniQuidli.dto;
 
+//DTO used to manage transfert tokens from an account to another account
 public class TransferDTO
 {
 	private Integer sendingAccountId;
