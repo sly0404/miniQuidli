@@ -39,13 +39,6 @@ public class UserController
 	@Autowired
 	private UserRepository userRepository;
 	
-	//list of all users with owned tokens
-	@GetMapping("/users")
-	public @ResponseBody Iterable<User> getAllUsers()
-	{
-		return userRepository.findAll();
-	}
-	
 	//return list of prices of tokens in TOKEN_LIST
 	private List<Double> getEurosTokenPriceList()
 	{	
