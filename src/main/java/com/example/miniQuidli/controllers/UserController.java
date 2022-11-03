@@ -92,7 +92,7 @@ public class UserController
 				}
 				else
 					//to change, manage if the user does not exist
-					return null;
+					return Optional.empty();
 			case "ETH" :
 				sendindAccountOptional = userRepository.findById(transferDTO.getSendingAccountId());
 				receivingAccountOptional = userRepository.findById(transferDTO.getReceivingAccountId());
@@ -103,7 +103,7 @@ public class UserController
 					return userRepository.findById(transferDTO.getSendingAccountId());
 				}
 				else
-					return null;
+					return Optional.empty();
 			case "BNB" :
 				sendindAccountOptional = userRepository.findById(transferDTO.getSendingAccountId());
 				receivingAccountOptional = userRepository.findById(transferDTO.getReceivingAccountId());
@@ -114,7 +114,7 @@ public class UserController
 					return userRepository.findById(transferDTO.getSendingAccountId());
 				}
 				else
-					return null;
+					return Optional.empty();
 			case "EUR" :
 				sendindAccountOptional = userRepository.findById(transferDTO.getSendingAccountId());
 				receivingAccountOptional = userRepository.findById(transferDTO.getReceivingAccountId());
@@ -125,9 +125,9 @@ public class UserController
 					return userRepository.findById(transferDTO.getSendingAccountId());
 				}
 				else
-					return null;
+					return Optional.empty();
 			default :
-				return null;
+				throw new IllegalArgumentException("Unknown currency! ");
 		}
 	}
 	
