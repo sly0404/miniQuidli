@@ -27,12 +27,6 @@ public class User
   private Double bnb_amount;
   
   private Double fiat_amount;
-  
-  /*
-  @OneToOne
-  @JoinColumn(name = "user_idwallet")
-  @JoinColumn(name = "wallet_id")
-  private Wallet wallet;*/
 
   public Integer getUser_id()
   {
@@ -113,18 +107,4 @@ public class User
   {
   	this.fiat_amount = fiat_amount;
   }
-  
-  
-
-  /*
-  public Wallet getWallet()
-  {
-  	return wallet;
-  }
-
-  public void setWallet(Wallet wallet)
-  {
-  	this.wallet = wallet;
-  }*/
-  
 }
