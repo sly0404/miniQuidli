@@ -18,15 +18,15 @@ public class User
   
   private String user_last_name;
   
-  private Integer user_age;
+  private int user_age;
   
-  private Double btc_amount;
+  private double btc_amount;
   
-  private Double eth_amount;
+  private double eth_amount;
   
-  private Double bnb_amount;
+  private double bnb_amount;
   
-  private Double fiat_amount;
+  private double fiat_amount;
 
   public Integer getUser_id()
   {
@@ -58,52 +58,52 @@ public class User
 	  this.user_last_name = user_last_name;
   }
 
-  public Integer getUser_age()
+  public int getUser_age()
   {
 	  return user_age;
   }
 
-  public void setUser_age(Integer user_age)
+  public void setUser_age(int user_age)
   {
 	  this.user_age = user_age;
   }
   
-  public Double getBtc_amount()
+  public double getBtc_amount()
   {
   	return btc_amount;
   }
 
-  public void setBtc_amount(Double btc_amount)
+  public void setBtc_amount(double btc_amount)
   {
   	this.btc_amount = btc_amount;
   }
 
-  public Double getEth_amount()
+  public double getEth_amount()
   {
   	return eth_amount;
   }
 
-  public void setEth_amount(Double eth_amount)
+  public void setEth_amount(double eth_amount)
   {
   	this.eth_amount = eth_amount;
   }
 
-  public Double getBnb_amount()
+  public double getBnb_amount()
   {
   	return bnb_amount;
   }
 
-  public void setBnb_amount(Double bnb_amount)
+  public void setBnb_amount(double bnb_amount)
   {
   	this.bnb_amount = bnb_amount;
   }
 
-  public Double getFiat_amount()
+  public double getFiat_amount()
   {
   	return fiat_amount;
   }
 
-  public void setFiat_amount(Double fiat_amount)
+  public void setFiat_amount(double fiat_amount)
   {
   	this.fiat_amount = fiat_amount;
   }

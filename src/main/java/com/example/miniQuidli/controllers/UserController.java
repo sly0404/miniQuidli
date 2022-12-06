@@ -36,6 +36,7 @@ import com.litesoftwares.coingecko.constant.Currency;
 public class UserController 
 {
 	private static String TOKEN_LIST = "bitcoin,ethereum,binancecoin";
+	
 	@Autowired
 	private UserRepository userRepository;
 	
@@ -79,8 +80,8 @@ public class UserController
 				receivingAccountOptional = userRepository.findById(transferDTO.getReceivingAccountId());
 				if (sendindAccountOptional.isPresent())
 				{
-					subBTCAmount(sendindAccountOptional, transferDTO);
-					addBTCAmount(receivingAccountOptional, transferDTO);
+					TransferUtils.subBTCAmount(sendindAccountOptional, transferDTO, userRepository);
+					TransferUtils.addBTCAmount(receivingAccountOptional, transferDTO, userRepository);
 					return userRepository.findById(transferDTO.getSendingAccountId());
 				}
 				else
@@ -91,8 +92,8 @@ public class UserController
 				receivingAccountOptional = userRepository.findById(transferDTO.getReceivingAccountId());
 				if (sendindAccountOptional.isPresent())
 				{
-					subETHAmount(sendindAccountOptional, transferDTO);
-					addETHAmount(receivingAccountOptional, transferDTO);
+					TransferUtils.subETHAmount(sendindAccountOptional, transferDTO, userRepository);
+					TransferUtils.addETHAmount(receivingAccountOptional, transferDTO, userRepository);
 					return userRepository.findById(transferDTO.getSendingAccountId());
 				}
 				else
@@ -102,8 +103,8 @@ public class UserController
 				receivingAccountOptional = userRepository.findById(transferDTO.getReceivingAccountId());
 				if (sendindAccountOptional.isPresent())
 				{
-					subBNBAmount(sendindAccountOptional, transferDTO);
-					addBNBAmount(receivingAccountOptional, transferDTO);
+					TransferUtils.subBNBAmount(sendindAccountOptional, transferDTO, userRepository);
+					TransferUtils.addBNBAmount(receivingAccountOptional, transferDTO, userRepository);
 					return userRepository.findById(transferDTO.getSendingAccountId());
 				}
 				else
@@ -122,77 +123,6 @@ public class UserController
 			default :
 				throw new IllegalArgumentException("Unknown currency! ");
 		}
-	}
-	
-	
-	//substract amount of user BTC balance if possible
-	private void subBTCAmount(Optional<User> sendindAccountOptional, TransferDTO transferDTO)
-	{
-		User sendindAccount = sendindAccountOptional.get();
-		Double btcAmount = sendindAccount.getBtc_amount();
-		Double newBtcAmount = btcAmount - transferDTO.getTransactionAmount();
-		if (newBtcAmount > 0)
-			sendindAccount.setBtc_amount(newBtcAmount);
-		else
-			throw new IllegalArgumentException("Amount to send exceeds balance!");
-		userRepository.save(sendindAccount);
-	}
-	
-	//add amount of user BTC balance
-	private void addBTCAmount(Optional<User> receivingAccountOptional, TransferDTO transferDTO)
-	{
-		User receiveingAccount = receivingAccountOptional.get();
-		Double btcAmount = receiveingAccount.getBtc_amount();
-		Double newBtcAmount = btcAmount + transferDTO.getTransactionAmount();
-		receiveingAccount.setBtc_amount(newBtcAmount);
-		userRepository.save(receiveingAccount);
-	}
-	
-	//substract amount of user ETH balance if possible
-	private void subETHAmount(Optional<User> sendindAccountOptional, TransferDTO transferDTO)
-	{
-		User sendindAccount = sendindAccountOptional.get();
-		Double ethAmount = sendindAccount.getEth_amount();
-		Double newEthAmount = ethAmount - transferDTO.getTransactionAmount();
-		if (newEthAmount > 0)
-			sendindAccount.setEth_amount(newEthAmount);
-		else
-			throw new IllegalArgumentException("Amount to send exceeds balance!");
-		userRepository.save(sendindAccount);
-	}
-	
-	//add amount of user ETH balance
-
-	private void addETHAmount(Optional<User> receivingAccountOptional, TransferDTO transferDTO)
-	{
-		User receiveingAccount = receivingAccountOptional.get();
-		Double ethAmount = receiveingAccount.getEth_amount();
-		Double newEthAmount = ethAmount + transferDTO.getTransactionAmount();
-		receiveingAccount.setEth_amount(newEthAmount);
-		userRepository.save(receiveingAccount);
-	}
-	
-	//substract amount of user BNB balance if possible
-	private void subBNBAmount(Optional<User> sendindAccountOptional, TransferDTO transferDTO)
-	{
-		User sendindAccount = sendindAccountOptional.get();
-		Double bnbAmount = sendindAccount.getBnb_amount();
-		Double newBnbAmount = bnbAmount - transferDTO.getTransactionAmount();
-		if (newBnbAmount > 0)
-			sendindAccount.setBnb_amount(newBnbAmount);
-		else
-			throw new IllegalArgumentException("Amount to send exceeds balance!");
-		userRepository.save(sendindAccount);
-	}
-	
-	//add amount of user BNB balance
-	private void addBNBAmount(Optional<User> receivingAccountOptional, TransferDTO transferDTO)
-	{
-		User receiveingAccount = receivingAccountOptional.get();
-		Double bnbAmount = receiveingAccount.getBnb_amount();
-		Double newBnbAmount = bnbAmount + transferDTO.getTransactionAmount();
-		receiveingAccount.setBnb_amount(newBnbAmount);
-		userRepository.save(receiveingAccount);
 	}
 	
 	//substract amount of user Fiat balance if possible
@@ -219,38 +149,6 @@ public class UserController
 		userRepository.save(receiveingAccount);
 	}
 	
-	
-	
-	//credit BTC amount of user BTC balance
-	private void creditBTCAmount(Optional<User> receivingAccountOptional, CreditWithdrawTranscationUserDTO creditWithdrawTranscationUserDTO)
-	{
-		User receiveingAccount = receivingAccountOptional.get();
-		Double btcAmount = receiveingAccount.getBtc_amount();
-		Double newBtcAmount = btcAmount + creditWithdrawTranscationUserDTO.getTransactionAmount();
-		receiveingAccount.setBtc_amount(newBtcAmount);
-		userRepository.save(receiveingAccount);
-	}
-	
-	//credit ETH amount of user ETH balance
-	private void creditETHAmount(Optional<User> receivingAccountOptional, CreditWithdrawTranscationUserDTO creditWithdrawTranscationUserDTO)
-	{
-		User receiveingAccount = receivingAccountOptional.get();
-		Double ethAmount = receiveingAccount.getEth_amount();
-		Double newEthAmount = ethAmount + creditWithdrawTranscationUserDTO.getTransactionAmount();
-		receiveingAccount.setEth_amount(newEthAmount);
-		userRepository.save(receiveingAccount);
-	}
-	
-	//credit BNB amount of user BNB balance
-	private void creditBNBAmount(Optional<User> receivingAccountOptional, CreditWithdrawTranscationUserDTO creditWithdrawTranscationUserDTO)
-	{
-		User receiveingAccount = receivingAccountOptional.get();
-		Double bnbAmount = receiveingAccount.getBnb_amount();
-		Double newBnbAmount = bnbAmount + creditWithdrawTranscationUserDTO.getTransactionAmount();
-		receiveingAccount.setBnb_amount(newBnbAmount);
-		userRepository.save(receiveingAccount);
-	}
-	
 	//credit token balance of user of a specific amount
 	
 	/*example of body request
@@ -269,12 +167,12 @@ public class UserController
 			switch (creditWithdrawTranscationUserDTO.getAmountCurrency())
 			{
 				case "BTC" :
-					creditBTCAmount(userToCreditOptional, creditWithdrawTranscationUserDTO);
+					CreditWithdrawUtils.creditBTCAmount(userToCreditOptional, creditWithdrawTranscationUserDTO, userRepository);
 				case "ETH" :
-					creditETHAmount(userToCreditOptional, creditWithdrawTranscationUserDTO);
+					CreditWithdrawUtils.creditETHAmount(userToCreditOptional, creditWithdrawTranscationUserDTO, userRepository);
 				case "BNB" :
-					creditBNBAmount(userToCreditOptional, creditWithdrawTranscationUserDTO);
-				default :
+					CreditWithdrawUtils.creditBNBAmount(userToCreditOptional, creditWithdrawTranscationUserDTO, userRepository);
+				default : 
 			}
 			return userToCreditOptional;
 		}
@@ -300,11 +198,11 @@ public class UserController
 			switch (creditWithdrawTranscationUserDTO.getAmountCurrency())
 			{
 				case "BTC" :
-					withdrawBTCAmount(userToWithdrawOptional, creditWithdrawTranscationUserDTO);
+					CreditWithdrawUtils.withdrawBTCAmount(userToWithdrawOptional, creditWithdrawTranscationUserDTO, userRepository);
 				case "ETH" :
-					withdrawETHAmount(userToWithdrawOptional, creditWithdrawTranscationUserDTO);
+					CreditWithdrawUtils.withdrawETHAmount(userToWithdrawOptional, creditWithdrawTranscationUserDTO, userRepository);
 				case "BNB" :
-					withdrawBNBAmount(userToWithdrawOptional, creditWithdrawTranscationUserDTO);
+					CreditWithdrawUtils.withdrawBNBAmount(userToWithdrawOptional, creditWithdrawTranscationUserDTO, userRepository);
 				default :
 			}
 			return userToWithdrawOptional;
@@ -313,44 +211,6 @@ public class UserController
 			return null;
 	}
 	
-	// withdraw BTC amount of user BTC balance if possible
-	private void withdrawBTCAmount(Optional<User> withdrawAccountOptional, CreditWithdrawTranscationUserDTO creditWithdrawTranscationUserDTO)
-	{
-		User withdrawAccount = withdrawAccountOptional.get();
-		Double btcAmount =  withdrawAccount.getBtc_amount();
-		Double newBtcAmount = btcAmount - creditWithdrawTranscationUserDTO.getTransactionAmount();
-		if (newBtcAmount > 0)
-			withdrawAccount.setBtc_amount(newBtcAmount);
-		else
-			throw new IllegalArgumentException("Amount to withdraw exceeds balance!");
-		userRepository.save(withdrawAccount);
-	}
-	
-	// withdraw ETH amount of user ETH balance if possible
-	private void withdrawETHAmount(Optional<User> withdrawAccountOptional, CreditWithdrawTranscationUserDTO creditWithdrawTranscationUserDTO)
-	{
-		User withdrawAccount = withdrawAccountOptional.get();
-		Double ethAmount =  withdrawAccount.getEth_amount();
-		Double newEthAmount = ethAmount - creditWithdrawTranscationUserDTO.getTransactionAmount();
-		if (newEthAmount > 0)
-			withdrawAccount.setEth_amount(newEthAmount);
-		else
-			throw new IllegalArgumentException("Amount to withdraw exceeds balance!");
-		userRepository.save(withdrawAccount);
-	}
-	
-	// withdraw BNB amount of user BNB balance if possible
-	private void withdrawBNBAmount(Optional<User> withdrawAccountOptional, CreditWithdrawTranscationUserDTO creditWithdrawTranscationUserDTO)
-	{
-		User withdrawAccount = withdrawAccountOptional.get();
-		Double bnbAmount =  withdrawAccount.getBnb_amount();
-		Double newBnbAmount = bnbAmount - creditWithdrawTranscationUserDTO.getTransactionAmount();
-		if (newBnbAmount > 0)
-			withdrawAccount.setBnb_amount(newBnbAmount);
-		else
-			throw new IllegalArgumentException("Amount to withdraw exceeds balance!");
-		userRepository.save(withdrawAccount);
-	}
 	
 	//wallet of a specific user with balance of each token and total balance of wallet
 	@GetMapping("/balance/{id}")
@@ -367,7 +227,7 @@ public class UserController
 			TokenDTO tokenBtcDTO = new TokenDTO();
 			tokenBtcDTO.setTokenName("bitcoin");
 			tokenBtcDTO.setTokenBalance(user.getBtc_amount());
-			Double tokenPrice = eurosTokenPriceList.get(0);
+			double tokenPrice = eurosTokenPriceList.get(0);
 			tokenBtcDTO.setTokenBalanceFiatValue(tokenPrice * user.getBtc_amount());
 			tokenDTOList.add(tokenBtcDTO);
 			
@@ -387,7 +247,7 @@ public class UserController
 			
 			balanceDTO.setUserTokensList(tokenDTOList);
 			balanceDTO.setFiatBalance(user.getFiat_amount());
-			Double totalTokensBalance = balanceDTO.getUserTokensList()
+			double totalTokensBalance = balanceDTO.getUserTokensList()
 					.stream()
 					.mapToDouble(tokenDTO -> tokenDTO.getTokenBalanceFiatValue())
 					.sum();
