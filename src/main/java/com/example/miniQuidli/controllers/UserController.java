@@ -114,8 +114,8 @@ public class UserController
 				receivingAccountOptional = userRepository.findById(transferDTO.getReceivingAccountId());
 				if (sendindAccountOptional.isPresent())
 				{
-					subFiatAmount(sendindAccountOptional, transferDTO);
-					addFiatAmount(receivingAccountOptional, transferDTO);
+					FiatUtils.subFiatAmount(sendindAccountOptional, transferDTO, userRepository);
+					FiatUtils.addFiatAmount(receivingAccountOptional, transferDTO, userRepository);
 					return userRepository.findById(transferDTO.getSendingAccountId());
 				}
 				else
@@ -123,30 +123,6 @@ public class UserController
 			default :
 				throw new IllegalArgumentException("Unknown currency! ");
 		}
-	}
-	
-	//substract amount of user Fiat balance if possible
-	private void subFiatAmount(Optional<User> sendindAccountOptional, TransferDTO transferDTO)
-	{
-		User sendindAccount = sendindAccountOptional.get();
-		Double fiatAmount = sendindAccount.getFiat_amount();
-		Double newFiatAmount = fiatAmount - transferDTO.getTransactionAmount();
-		if (newFiatAmount > 0)
-			sendindAccount.setFiat_amount(newFiatAmount);
-		else
-			throw new IllegalArgumentException("Amount to send exceeds balance!");
-		userRepository.save(sendindAccount);
-	}
-	
-	
-	//add amount of user Fiat balance
-	private void addFiatAmount(Optional<User> receivingAccountOptional, TransferDTO transferDTO)
-	{
-		User receiveingAccount = receivingAccountOptional.get();
-		Double fiatAmount = receiveingAccount.getFiat_amount();
-		Double newFiatAmount = fiatAmount + transferDTO.getTransactionAmount();
-		receiveingAccount.setFiat_amount(newFiatAmount);
-		userRepository.save(receiveingAccount);
 	}
 	
 	//credit token balance of user of a specific amount
@@ -226,32 +202,32 @@ public class UserController
 			
 			TokenDTO tokenBtcDTO = new TokenDTO();
 			tokenBtcDTO.setTokenName("bitcoin");
-			tokenBtcDTO.setTokenBalance(user.getBtc_amount());
+			tokenBtcDTO.setTokenBalance(user.getWallet().getBtc_amount());
 			double tokenPrice = eurosTokenPriceList.get(0);
-			tokenBtcDTO.setTokenBalanceFiatValue(tokenPrice * user.getBtc_amount());
+			tokenBtcDTO.setTokenBalanceFiatValue(tokenPrice * user.getWallet().getBtc_amount());
 			tokenDTOList.add(tokenBtcDTO);
 			
 			TokenDTO tokenEthDTO = new TokenDTO();
 			tokenEthDTO.setTokenName("ethereum");
-			tokenEthDTO.setTokenBalance(user.getEth_amount());
+			tokenEthDTO.setTokenBalance(user.getWallet().getEth_amount());
 			tokenPrice = eurosTokenPriceList.get(1);
-			tokenEthDTO.setTokenBalanceFiatValue(tokenPrice * user.getEth_amount());
+			tokenEthDTO.setTokenBalanceFiatValue(tokenPrice * user.getWallet().getEth_amount());
 			tokenDTOList.add(tokenEthDTO);
 			
 			TokenDTO tokenBnbDTO = new TokenDTO();
 			tokenBnbDTO.setTokenName("binancecoin");
-			tokenBnbDTO.setTokenBalance(user.getBnb_amount());
+			tokenBnbDTO.setTokenBalance(user.getWallet().getBnb_amount());
 			tokenPrice = eurosTokenPriceList.get(2);
-			tokenBnbDTO.setTokenBalanceFiatValue(tokenPrice * user.getBnb_amount());
+			tokenBnbDTO.setTokenBalanceFiatValue(tokenPrice * user.getWallet().getBnb_amount());
 			tokenDTOList.add(tokenBnbDTO);
 			
 			balanceDTO.setUserTokensList(tokenDTOList);
-			balanceDTO.setFiatBalance(user.getFiat_amount());
+			balanceDTO.setFiatBalance(user.getWallet().getFiat_amount());
 			double totalTokensBalance = balanceDTO.getUserTokensList()
 					.stream()
 					.mapToDouble(tokenDTO -> tokenDTO.getTokenBalanceFiatValue())
 					.sum();
-			balanceDTO.setTotalBalance(user.getFiat_amount() +totalTokensBalance);
+			balanceDTO.setTotalBalance(user.getWallet().getFiat_amount() +totalTokensBalance);
 			return balanceDTO;
 		}
 		else

@@ -20,14 +20,10 @@ public class User
   
   private int user_age;
   
-  private double btc_amount;
+  @OneToOne
+  @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+  private Wallet wallet;
   
-  private double eth_amount;
-  
-  private double bnb_amount;
-  
-  private double fiat_amount;
-
   public Integer getUser_id()
   {
 	return user_id;
@@ -67,44 +63,14 @@ public class User
   {
 	  this.user_age = user_age;
   }
-  
-  public double getBtc_amount()
+
+  public Wallet getWallet()
   {
-  	return btc_amount;
+	  return wallet;
   }
 
-  public void setBtc_amount(double btc_amount)
+  public void setWallet(Wallet wallet)
   {
-  	this.btc_amount = btc_amount;
-  }
-
-  public double getEth_amount()
-  {
-  	return eth_amount;
-  }
-
-  public void setEth_amount(double eth_amount)
-  {
-  	this.eth_amount = eth_amount;
-  }
-
-  public double getBnb_amount()
-  {
-  	return bnb_amount;
-  }
-
-  public void setBnb_amount(double bnb_amount)
-  {
-  	this.bnb_amount = bnb_amount;
-  }
-
-  public double getFiat_amount()
-  {
-  	return fiat_amount;
-  }
-
-  public void setFiat_amount(double fiat_amount)
-  {
-  	this.fiat_amount = fiat_amount;
+	  this.wallet = wallet;
   }
 }

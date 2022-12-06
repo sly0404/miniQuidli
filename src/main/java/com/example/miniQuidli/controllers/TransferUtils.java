@@ -12,10 +12,10 @@ public class TransferUtils
 	public static void subBTCAmount(Optional<User> sendindAccountOptional, TransferDTO transferDTO, UserRepository userRepository)
 	{
 		User sendindAccount = sendindAccountOptional.get();
-		double btcAmount = sendindAccount.getBtc_amount();
+		double btcAmount = sendindAccount.getWallet().getBtc_amount();
 		double newBtcAmount = btcAmount - transferDTO.getTransactionAmount();
 		if (newBtcAmount > 0)
-			sendindAccount.setBtc_amount(newBtcAmount);
+			sendindAccount.getWallet().setBtc_amount(newBtcAmount);
 		else
 			throw new IllegalArgumentException("Amount to send exceeds balance!");
 		userRepository.save(sendindAccount);
@@ -25,9 +25,9 @@ public class TransferUtils
 	public static void addBTCAmount(Optional<User> receivingAccountOptional, TransferDTO transferDTO, UserRepository userRepository)
 	{
 		User receiveingAccount = receivingAccountOptional.get();
-		double btcAmount = receiveingAccount.getBtc_amount();
+		double btcAmount = receiveingAccount.getWallet().getBtc_amount();
 		double newBtcAmount = btcAmount + transferDTO.getTransactionAmount();
-		receiveingAccount.setBtc_amount(newBtcAmount);
+		receiveingAccount.getWallet().setBtc_amount(newBtcAmount);
 		userRepository.save(receiveingAccount);
 	}
 
@@ -35,10 +35,10 @@ public class TransferUtils
 	public static void subETHAmount(Optional<User> sendindAccountOptional, TransferDTO transferDTO, UserRepository userRepository)
 	{
 		User sendindAccount = sendindAccountOptional.get();
-		double ethAmount = sendindAccount.getEth_amount();
+		double ethAmount = sendindAccount.getWallet().getEth_amount();
 		double newEthAmount = ethAmount - transferDTO.getTransactionAmount();
 		if (newEthAmount > 0)
-			sendindAccount.setEth_amount(newEthAmount);
+			sendindAccount.getWallet().setEth_amount(newEthAmount);
 		else
 			throw new IllegalArgumentException("Amount to send exceeds balance!");
 		userRepository.save(sendindAccount);
@@ -49,9 +49,9 @@ public class TransferUtils
 	public static void addETHAmount(Optional<User> receivingAccountOptional, TransferDTO transferDTO, UserRepository userRepository)
 	{
 		User receiveingAccount = receivingAccountOptional.get();
-		double ethAmount = receiveingAccount.getEth_amount();
+		double ethAmount = receiveingAccount.getWallet().getEth_amount();
 		double newEthAmount = ethAmount + transferDTO.getTransactionAmount();
-		receiveingAccount.setEth_amount(newEthAmount);
+		receiveingAccount.getWallet().setEth_amount(newEthAmount);
 		userRepository.save(receiveingAccount);
 	}
 
@@ -59,10 +59,10 @@ public class TransferUtils
 	public static void subBNBAmount(Optional<User> sendindAccountOptional, TransferDTO transferDTO, UserRepository userRepository)
 	{
 		User sendindAccount = sendindAccountOptional.get();
-		double bnbAmount = sendindAccount.getBnb_amount();
+		double bnbAmount = sendindAccount.getWallet().getBnb_amount();
 		double newBnbAmount = bnbAmount - transferDTO.getTransactionAmount();
 		if (newBnbAmount > 0)
-			sendindAccount.setBnb_amount(newBnbAmount);
+			sendindAccount.getWallet().setBnb_amount(newBnbAmount);
 		else
 			throw new IllegalArgumentException("Amount to send exceeds balance!");
 		userRepository.save(sendindAccount);
@@ -72,9 +72,9 @@ public class TransferUtils
 	public static void addBNBAmount(Optional<User> receivingAccountOptional, TransferDTO transferDTO, UserRepository userRepository)
 	{
 		User receiveingAccount = receivingAccountOptional.get();
-		double bnbAmount = receiveingAccount.getBnb_amount();
+		double bnbAmount = receiveingAccount.getWallet().getBnb_amount();
 		double newBnbAmount = bnbAmount + transferDTO.getTransactionAmount();
-		receiveingAccount.setBnb_amount(newBnbAmount);
+		receiveingAccount.getWallet().setBnb_amount(newBnbAmount);
 		userRepository.save(receiveingAccount);
 	}
 }
