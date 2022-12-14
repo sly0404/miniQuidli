@@ -22,16 +22,6 @@ public class Wallet
 
 	private Integer user_id;
 
-	public Integer getWallet_id()
-	{
-		return wallet_id;
-	}
-
-	public void setWallet_id(Integer wallet_id)
-	{
-		this.wallet_id = wallet_id;
-	}
-
 	public double getBtc_amount()
 	{
 		return btc_amount;
@@ -70,15 +60,5 @@ public class Wallet
 	public void setFiat_amount(double fiat_amount)
 	{
 		this.fiat_amount = fiat_amount;
-	}
-
-	public Integer getUser_id()
-	{
-		return user_id;
-	}
-
-	public void setUser_id(Integer user_id)
-	{
-		this.user_id = user_id;
 	}
 }
