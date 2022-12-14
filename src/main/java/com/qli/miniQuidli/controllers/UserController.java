@@ -43,12 +43,7 @@ public class UserController
 	private UserRepository userRepository;
 	
 	private UserDAO userDAO;
-/*	
-	public UserController()
-	{
-		userDAO = new UserDAOImplementation(userRepository);
-	}
-*/	
+
 	//return list of prices of tokens in TOKEN_LIST
 	private List<Double> getEurosTokenPriceList()
 	{	
