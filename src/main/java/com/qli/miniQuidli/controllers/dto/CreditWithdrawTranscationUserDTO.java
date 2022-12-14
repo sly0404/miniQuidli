@@ -1,4 +1,4 @@
-package com.example.miniQuidli.controllers.dto;
+package com.qli.miniQuidli.controllers.dto;
 
 //DTO used to credit or withdraw an amount of token to a user
 public class CreditWithdrawTranscationUserDTO

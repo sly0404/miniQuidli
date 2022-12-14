@@ -1,4 +1,4 @@
-package com.example.miniQuidli.controllers;
+package com.qli.miniQuidli.controllers;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,12 +16,12 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import com.example.miniQuidli.accessdata.User;
-import com.example.miniQuidli.accessdata.UserRepository;
-import com.example.miniQuidli.controllers.beans.Balance;
-import com.example.miniQuidli.controllers.beans.Token;
-import com.example.miniQuidli.controllers.dto.CreditWithdrawTranscationUserDTO;
-import com.example.miniQuidli.controllers.dto.TransferDTO;
+import com.qli.miniQuidli.accessdata.User;
+import com.qli.miniQuidli.accessdata.UserRepository;
+import com.qli.miniQuidli.controllers.beans.Balance;
+import com.qli.miniQuidli.controllers.beans.Token;
+import com.qli.miniQuidli.controllers.dto.CreditWithdrawTranscationUserDTO;
+import com.qli.miniQuidli.controllers.dto.TransferDTO;
 
 /*import com.example.miniQuidli.accessdata.Wallet;
 import com.example.miniQuidli.accessdata.WalletRepository;*/
