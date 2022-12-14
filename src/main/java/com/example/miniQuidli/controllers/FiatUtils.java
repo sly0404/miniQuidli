@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import com.example.miniQuidli.accessdata.User;
 import com.example.miniQuidli.accessdata.UserRepository;
-import com.example.miniQuidli.dto.TransferDTO;
+import com.example.miniQuidli.controllers.dto.TransferDTO;
 
 public class FiatUtils
 {

@@ -1,4 +1,4 @@
-package com.example.miniQuidli.dto;
+package com.example.miniQuidli.controllers.beans;
 
 import java.util.List;
 
@@ -6,18 +6,18 @@ import com.example.miniQuidli.accessdata.User;
 
 //DTO used to manage response to display wallet of a user
 
-public class BalanceDTO
+public class Balance
 {
-	private List<TokenDTO> userTokensList;
+	private List<Token> userTokensList;
 	private Double fiatBalance;;
 	private Double totalBalance;
 
-	public List<TokenDTO> getUserTokensList()
+	public List<Token> getUserTokensList()
 	{
 		return userTokensList;
 	}
 
-	public void setUserTokensList(List<TokenDTO> userTokensList)
+	public void setUserTokensList(List<Token> userTokensList)
 	{
 		this.userTokensList = userTokensList;
 	}

@@ -18,10 +18,10 @@ import org.springframework.stereotype.Controller;
 
 import com.example.miniQuidli.accessdata.User;
 import com.example.miniQuidli.accessdata.UserRepository;
-import com.example.miniQuidli.dto.BalanceDTO;
-import com.example.miniQuidli.dto.CreditWithdrawTranscationUserDTO;
-import com.example.miniQuidli.dto.TokenDTO;
-import com.example.miniQuidli.dto.TransferDTO;
+import com.example.miniQuidli.controllers.beans.Balance;
+import com.example.miniQuidli.controllers.beans.Token;
+import com.example.miniQuidli.controllers.dto.CreditWithdrawTranscationUserDTO;
+import com.example.miniQuidli.controllers.dto.TransferDTO;
 
 /*import com.example.miniQuidli.accessdata.Wallet;
 import com.example.miniQuidli.accessdata.WalletRepository;*/
@@ -190,45 +190,45 @@ public class UserController
 	
 	//wallet of a specific user with balance of each token and total balance of wallet
 	@GetMapping("/balance/{id}")
-	public @ResponseBody BalanceDTO getBalance(@PathVariable Integer id)
+	public @ResponseBody Balance getBalance(@PathVariable Integer id)
 	{
 		Optional<User> userOptional = userRepository.findById(id);
-		BalanceDTO balanceDTO = new BalanceDTO();
+		Balance balance = new Balance();
 		if (userOptional.isPresent())
 		{
 			List<Double> eurosTokenPriceList = getEurosTokenPriceList();
 			User user = userOptional.get();
-			List<TokenDTO> tokenDTOList = new ArrayList<TokenDTO>();
+			List<Token> tokenDTOList = new ArrayList<Token>();
 			
-			TokenDTO tokenBtcDTO = new TokenDTO();
-			tokenBtcDTO.setTokenName("bitcoin");
-			tokenBtcDTO.setTokenBalance(user.getWallet().getBtc_amount());
+			Token tokenBtc = new Token();
+			tokenBtc.setTokenName("bitcoin");
+			tokenBtc.setTokenBalance(user.getWallet().getBtc_amount());
 			double tokenPrice = eurosTokenPriceList.get(0);
-			tokenBtcDTO.setTokenBalanceFiatValue(tokenPrice * user.getWallet().getBtc_amount());
-			tokenDTOList.add(tokenBtcDTO);
+			tokenBtc.setTokenBalanceFiatValue(tokenPrice * user.getWallet().getBtc_amount());
+			tokenDTOList.add(tokenBtc);
 			
-			TokenDTO tokenEthDTO = new TokenDTO();
-			tokenEthDTO.setTokenName("ethereum");
-			tokenEthDTO.setTokenBalance(user.getWallet().getEth_amount());
+			Token tokenEth = new Token();
+			tokenEth.setTokenName("ethereum");
+			tokenEth.setTokenBalance(user.getWallet().getEth_amount());
 			tokenPrice = eurosTokenPriceList.get(1);
-			tokenEthDTO.setTokenBalanceFiatValue(tokenPrice * user.getWallet().getEth_amount());
-			tokenDTOList.add(tokenEthDTO);
+			tokenEth.setTokenBalanceFiatValue(tokenPrice * user.getWallet().getEth_amount());
+			tokenDTOList.add(tokenEth);
 			
-			TokenDTO tokenBnbDTO = new TokenDTO();
-			tokenBnbDTO.setTokenName("binancecoin");
-			tokenBnbDTO.setTokenBalance(user.getWallet().getBnb_amount());
+			Token tokenBnb = new Token();
+			tokenBnb.setTokenName("binancecoin");
+			tokenBnb.setTokenBalance(user.getWallet().getBnb_amount());
 			tokenPrice = eurosTokenPriceList.get(2);
-			tokenBnbDTO.setTokenBalanceFiatValue(tokenPrice * user.getWallet().getBnb_amount());
-			tokenDTOList.add(tokenBnbDTO);
+			tokenBnb.setTokenBalanceFiatValue(tokenPrice * user.getWallet().getBnb_amount());
+			tokenDTOList.add(tokenBnb);
 			
-			balanceDTO.setUserTokensList(tokenDTOList);
-			balanceDTO.setFiatBalance(user.getWallet().getFiat_amount());
-			double totalTokensBalance = balanceDTO.getUserTokensList()
+			balance.setUserTokensList(tokenDTOList);
+			balance.setFiatBalance(user.getWallet().getFiat_amount());
+			double totalTokensBalance = balance.getUserTokensList()
 					.stream()
-					.mapToDouble(tokenDTO -> tokenDTO.getTokenBalanceFiatValue())
+					.mapToDouble(token -> token.getTokenBalanceFiatValue())
 					.sum();
-			balanceDTO.setTotalBalance(user.getWallet().getFiat_amount() +totalTokensBalance);
-			return balanceDTO;
+			balance.setTotalBalance(user.getWallet().getFiat_amount() +totalTokensBalance);
+			return balance;
 		}
 		else
 			return null;
