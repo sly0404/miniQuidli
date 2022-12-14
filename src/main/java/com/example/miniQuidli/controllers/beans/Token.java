@@ -1,7 +1,7 @@
-package com.example.miniQuidli.dto;
+package com.example.miniQuidli.controllers.beans;
 
 //DTO used to manage response to display tokens of wallet
-public class TokenDTO
+public class Token
 {
 	private String tokenName;
 	private Double tokenBalance;

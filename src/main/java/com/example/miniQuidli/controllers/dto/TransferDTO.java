@@ -1,4 +1,4 @@
-package com.example.miniQuidli.dto;
+package com.example.miniQuidli.controllers.dto;
 
 //DTO used to manage transfert tokens from an account to another account
 public class TransferDTO
