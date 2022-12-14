@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import com.qli.miniQuidli.accessdata.User;
+import com.qli.miniQuidli.accessdata.UserDAO;
+import com.qli.miniQuidli.accessdata.UserDAOImplementation;
 import com.qli.miniQuidli.accessdata.UserRepository;
 import com.qli.miniQuidli.controllers.beans.Balance;
 import com.qli.miniQuidli.controllers.beans.Token;
@@ -73,15 +75,16 @@ public class UserController
 	{
 		Optional<User> sendindAccountOptional;
 		Optional<User> receivingAccountOptional;
+		UserDAO userDAO = new UserDAOImplementation(userRepository);
 		switch (transferDTO.getTransactionCurrency())
 		{
 			case "BTC" :
-				sendindAccountOptional = userRepository.findById(transferDTO.getSendingAccountId());
-				receivingAccountOptional = userRepository.findById(transferDTO.getReceivingAccountId());
+				sendindAccountOptional = userDAO.getById(transferDTO.getSendingAccountId());
+				receivingAccountOptional = userDAO.getById(transferDTO.getReceivingAccountId());
 				if (sendindAccountOptional.isPresent())
 				{
-					TransferUtils.subBTCAmount(sendindAccountOptional, transferDTO, userRepository);
-					TransferUtils.addBTCAmount(receivingAccountOptional, transferDTO, userRepository);
+					TransferUtils.subBTCAmount(sendindAccountOptional, transferDTO, userDAO);
+					TransferUtils.addBTCAmount(receivingAccountOptional, transferDTO, userDAO);
 					return userRepository.findById(transferDTO.getSendingAccountId());
 				}
 				else
@@ -92,8 +95,8 @@ public class UserController
 				receivingAccountOptional = userRepository.findById(transferDTO.getReceivingAccountId());
 				if (sendindAccountOptional.isPresent())
 				{
-					TransferUtils.subETHAmount(sendindAccountOptional, transferDTO, userRepository);
-					TransferUtils.addETHAmount(receivingAccountOptional, transferDTO, userRepository);
+					TransferUtils.subETHAmount(sendindAccountOptional, transferDTO, userDAO);
+					TransferUtils.addETHAmount(receivingAccountOptional, transferDTO, userDAO);
 					return userRepository.findById(transferDTO.getSendingAccountId());
 				}
 				else
@@ -103,8 +106,8 @@ public class UserController
 				receivingAccountOptional = userRepository.findById(transferDTO.getReceivingAccountId());
 				if (sendindAccountOptional.isPresent())
 				{
-					TransferUtils.subBNBAmount(sendindAccountOptional, transferDTO, userRepository);
-					TransferUtils.addBNBAmount(receivingAccountOptional, transferDTO, userRepository);
+					TransferUtils.subBNBAmount(sendindAccountOptional, transferDTO, userDAO);
+					TransferUtils.addBNBAmount(receivingAccountOptional, transferDTO, userDAO);
 					return userRepository.findById(transferDTO.getSendingAccountId());
 				}
 				else
@@ -114,8 +117,8 @@ public class UserController
 				receivingAccountOptional = userRepository.findById(transferDTO.getReceivingAccountId());
 				if (sendindAccountOptional.isPresent())
 				{
-					FiatUtils.subFiatAmount(sendindAccountOptional, transferDTO, userRepository);
-					FiatUtils.addFiatAmount(receivingAccountOptional, transferDTO, userRepository);
+					FiatUtils.subFiatAmount(sendindAccountOptional, transferDTO, userDAO);
+					FiatUtils.addFiatAmount(receivingAccountOptional, transferDTO, userDAO);
 					return userRepository.findById(transferDTO.getSendingAccountId());
 				}
 				else
