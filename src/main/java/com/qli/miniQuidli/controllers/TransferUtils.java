@@ -3,7 +3,7 @@ package com.qli.miniQuidli.controllers;
 import java.util.Optional;
 
 import com.qli.miniQuidli.accessdata.User;
-import com.qli.miniQuidli.accessdata.UserDAO;
+import com.qli.miniQuidli.accessdata.dao.UserDAO;
 import com.qli.miniQuidli.accessdata.UserRepository;
 import com.qli.miniQuidli.controllers.dto.TransferDTO;
 

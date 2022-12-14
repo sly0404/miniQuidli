@@ -1,8 +1,11 @@
-package com.qli.miniQuidli.accessdata;
+package com.qli.miniQuidli.accessdata.dao;
 
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.qli.miniQuidli.accessdata.User;
+import com.qli.miniQuidli.accessdata.UserRepository;
 
 public class UserDAOImplementation implements UserDAO
 {
