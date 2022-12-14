@@ -2,28 +2,10 @@ package com.qli.miniQuidli.accessdata;
 
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-public class UserDAO implements DAO
+public interface UserDAO
 {
+	public Optional<User> getById(Integer userId);
 	
-	private UserRepository userRepository;
+	void saveUser(User user);
 	
-	
-	public UserDAO(UserRepository userRepository)
-	{
-		this.userRepository = userRepository;
-	}
-	
-	@Override
-	public Optional<User> getById(Integer userId)
-	{
-		return userRepository.findById(userId);
-	}
-
-	@Override
-	public void saveUser(User user)
-	{
-		userRepository.save(user);
-	}
 }
