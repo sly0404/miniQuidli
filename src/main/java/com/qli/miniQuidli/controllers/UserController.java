@@ -17,8 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import com.qli.miniQuidli.accessdata.User;
-import com.qli.miniQuidli.accessdata.UserDAO;
-import com.qli.miniQuidli.accessdata.UserDAOImplementation;
+import com.qli.miniQuidli.accessdata.dao.UserDAO;
+import com.qli.miniQuidli.accessdata.dao.UserDAOImplementation;
 import com.qli.miniQuidli.accessdata.UserRepository;
 import com.qli.miniQuidli.controllers.beans.Balance;
 import com.qli.miniQuidli.controllers.beans.Token;
@@ -42,6 +42,13 @@ public class UserController
 	@Autowired
 	private UserRepository userRepository;
 	
+	private UserDAO userDAO;
+/*	
+	public UserController()
+	{
+		userDAO = new UserDAOImplementation(userRepository);
+	}
+*/	
 	//return list of prices of tokens in TOKEN_LIST
 	private List<Double> getEurosTokenPriceList()
 	{	
@@ -75,7 +82,7 @@ public class UserController
 	{
 		Optional<User> sendindAccountOptional;
 		Optional<User> receivingAccountOptional;
-		UserDAO userDAO = new UserDAOImplementation(userRepository);
+		UserDAO userDAO = getDAOInstance();
 		switch (transferDTO.getTransactionCurrency())
 		{
 			case "BTC" :
@@ -85,41 +92,41 @@ public class UserController
 				{
 					TransferUtils.subBTCAmount(sendindAccountOptional, transferDTO, userDAO);
 					TransferUtils.addBTCAmount(receivingAccountOptional, transferDTO, userDAO);
-					return userRepository.findById(transferDTO.getSendingAccountId());
+					return userDAO.getById(transferDTO.getSendingAccountId());
 				}
 				else
 					//to change, manage if the user does not exist
 					return Optional.empty();
 			case "ETH" :
-				sendindAccountOptional = userRepository.findById(transferDTO.getSendingAccountId());
-				receivingAccountOptional = userRepository.findById(transferDTO.getReceivingAccountId());
+				sendindAccountOptional = userDAO.getById(transferDTO.getSendingAccountId());
+				receivingAccountOptional = userDAO.getById(transferDTO.getReceivingAccountId());
 				if (sendindAccountOptional.isPresent())
 				{
 					TransferUtils.subETHAmount(sendindAccountOptional, transferDTO, userDAO);
 					TransferUtils.addETHAmount(receivingAccountOptional, transferDTO, userDAO);
-					return userRepository.findById(transferDTO.getSendingAccountId());
+					return userDAO.getById(transferDTO.getSendingAccountId());
 				}
 				else
 					return Optional.empty();
 			case "BNB" :
-				sendindAccountOptional = userRepository.findById(transferDTO.getSendingAccountId());
-				receivingAccountOptional = userRepository.findById(transferDTO.getReceivingAccountId());
+				sendindAccountOptional = userDAO.getById(transferDTO.getSendingAccountId());
+				receivingAccountOptional = userDAO.getById(transferDTO.getReceivingAccountId());
 				if (sendindAccountOptional.isPresent())
 				{
 					TransferUtils.subBNBAmount(sendindAccountOptional, transferDTO, userDAO);
 					TransferUtils.addBNBAmount(receivingAccountOptional, transferDTO, userDAO);
-					return userRepository.findById(transferDTO.getSendingAccountId());
+					return userDAO.getById(transferDTO.getSendingAccountId());
 				}
 				else
 					return Optional.empty();
 			case "EUR" :
-				sendindAccountOptional = userRepository.findById(transferDTO.getSendingAccountId());
-				receivingAccountOptional = userRepository.findById(transferDTO.getReceivingAccountId());
+				sendindAccountOptional = userDAO.getById(transferDTO.getSendingAccountId());
+				receivingAccountOptional = userDAO.getById(transferDTO.getReceivingAccountId());
 				if (sendindAccountOptional.isPresent())
 				{
 					FiatUtils.subFiatAmount(sendindAccountOptional, transferDTO, userDAO);
 					FiatUtils.addFiatAmount(receivingAccountOptional, transferDTO, userDAO);
-					return userRepository.findById(transferDTO.getSendingAccountId());
+					return userDAO.getById(transferDTO.getSendingAccountId());
 				}
 				else
 					return Optional.empty();
@@ -140,17 +147,18 @@ public class UserController
 	@PostMapping("/credit")
 	public @ResponseBody Optional<User> creditUser(@RequestBody CreditWithdrawTranscationUserDTO creditWithdrawTranscationUserDTO)
 	{
-		Optional<User> userToCreditOptional = userRepository.findById(creditWithdrawTranscationUserDTO.getUserAccountId());
+		UserDAO userDAO = getDAOInstance();
+		Optional<User> userToCreditOptional = userDAO.getById(creditWithdrawTranscationUserDTO.getUserAccountId());
 		if (userToCreditOptional.isPresent())
 		{
 			switch (creditWithdrawTranscationUserDTO.getAmountCurrency())
 			{
 				case "BTC" :
-					CreditWithdrawUtils.creditBTCAmount(userToCreditOptional, creditWithdrawTranscationUserDTO, userRepository);
+					CreditWithdrawUtils.creditBTCAmount(userToCreditOptional, creditWithdrawTranscationUserDTO, userDAO);
 				case "ETH" :
-					CreditWithdrawUtils.creditETHAmount(userToCreditOptional, creditWithdrawTranscationUserDTO, userRepository);
+					CreditWithdrawUtils.creditETHAmount(userToCreditOptional, creditWithdrawTranscationUserDTO, userDAO);
 				case "BNB" :
-					CreditWithdrawUtils.creditBNBAmount(userToCreditOptional, creditWithdrawTranscationUserDTO, userRepository);
+					CreditWithdrawUtils.creditBNBAmount(userToCreditOptional, creditWithdrawTranscationUserDTO, userDAO);
 				default : 
 			}
 			return userToCreditOptional;
@@ -171,17 +179,18 @@ public class UserController
 	@PostMapping("/withdraw")
 	public @ResponseBody Optional<User> withdrawUser(@RequestBody CreditWithdrawTranscationUserDTO creditWithdrawTranscationUserDTO)
 	{
-		Optional<User> userToWithdrawOptional = userRepository.findById(creditWithdrawTranscationUserDTO.getUserAccountId());
+		UserDAO userDAO = getDAOInstance();
+		Optional<User> userToWithdrawOptional = userDAO.getById(creditWithdrawTranscationUserDTO.getUserAccountId());
 		if (userToWithdrawOptional.isPresent())
 		{
 			switch (creditWithdrawTranscationUserDTO.getAmountCurrency())
 			{
 				case "BTC" :
-					CreditWithdrawUtils.withdrawBTCAmount(userToWithdrawOptional, creditWithdrawTranscationUserDTO, userRepository);
+					CreditWithdrawUtils.withdrawBTCAmount(userToWithdrawOptional, creditWithdrawTranscationUserDTO, userDAO);
 				case "ETH" :
-					CreditWithdrawUtils.withdrawETHAmount(userToWithdrawOptional, creditWithdrawTranscationUserDTO, userRepository);
+					CreditWithdrawUtils.withdrawETHAmount(userToWithdrawOptional, creditWithdrawTranscationUserDTO, userDAO);
 				case "BNB" :
-					CreditWithdrawUtils.withdrawBNBAmount(userToWithdrawOptional, creditWithdrawTranscationUserDTO, userRepository);
+					CreditWithdrawUtils.withdrawBNBAmount(userToWithdrawOptional, creditWithdrawTranscationUserDTO, userDAO);
 				default :
 			}
 			return userToWithdrawOptional;
@@ -195,7 +204,8 @@ public class UserController
 	@GetMapping("/balance/{id}")
 	public @ResponseBody Balance getBalance(@PathVariable Integer id)
 	{
-		Optional<User> userOptional = userRepository.findById(id);
+		UserDAO userDAO = getDAOInstance();
+		Optional<User> userOptional = userDAO.getById(id);
 		Balance balance = new Balance();
 		if (userOptional.isPresent())
 		{
@@ -258,5 +268,12 @@ public class UserController
 	    "fiatBalance": 1000.1,
 	    "totalBalance": 347873.431
 	}*/
+	
+	public UserDAO getDAOInstance()
+	{
+		if (userDAO == null)
+			userDAO = new UserDAOImplementation(userRepository);
+		return userDAO; 
+	}
 	
 }

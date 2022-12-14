@@ -1,6 +1,8 @@
-package com.qli.miniQuidli.accessdata;
+package com.qli.miniQuidli.accessdata.dao;
 
 import java.util.Optional;
+
+import com.qli.miniQuidli.accessdata.User;
 
 public interface UserDAO
 {
