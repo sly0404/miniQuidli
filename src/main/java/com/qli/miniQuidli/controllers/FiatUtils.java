@@ -1,10 +1,10 @@
-package com.example.miniQuidli.controllers;
+package com.qli.miniQuidli.controllers;
 
 import java.util.Optional;
 
-import com.example.miniQuidli.accessdata.User;
-import com.example.miniQuidli.accessdata.UserRepository;
-import com.example.miniQuidli.controllers.dto.TransferDTO;
+import com.qli.miniQuidli.accessdata.User;
+import com.qli.miniQuidli.accessdata.UserRepository;
+import com.qli.miniQuidli.controllers.dto.TransferDTO;
 
 public class FiatUtils
 {

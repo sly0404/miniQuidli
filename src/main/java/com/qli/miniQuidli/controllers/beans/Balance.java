@@ -1,8 +1,7 @@
-package com.example.miniQuidli.controllers.beans;
+package com.qli.miniQuidli.controllers.beans;
 
 import java.util.List;
 
-import com.example.miniQuidli.accessdata.User;
 
 //DTO used to manage response to display wallet of a user
 

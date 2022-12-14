@@ -1,4 +1,4 @@
-package com.example.miniQuidli.accessdata;
+package com.qli.miniQuidli.accessdata;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

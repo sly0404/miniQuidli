@@ -1,7 +1,7 @@
-package com.example.miniQuidli.accessdata;
+package com.qli.miniQuidli.accessdata;
 
 import org.springframework.data.repository.CrudRepository;
-import com.example.miniQuidli.accessdata.User;
+import com.qli.miniQuidli.accessdata.User;
 
 public interface UserRepository extends CrudRepository<User, Integer>
 {
